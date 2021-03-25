@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> justfile Detect"
+
+if [ -f "justfile" ] || [ -f "Justfile" ] ; then
+  echo "justfile found!"
+  exit 0
+fi
+
+exit 100
