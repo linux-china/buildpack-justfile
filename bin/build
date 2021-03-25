@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> justfile Buildpack"
+
+# GET ARGS
+layersdir=$1
+# just layer directory
+just_layer_dir="$layersdir"/just
+
+# install just
+echo "---> Installing just"
+mkdir -p "${just_layer_dir}/bin"
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to "${just_layer_dir}/bin"
+
+# Write layer toml for just
+echo "---> Writing ${just_layer_dir}.toml"
+cat >"${just_layer_dir}.toml" <<EOF
+launch = true
+build = true
+cache = false
+[metadata]
+version = "last"
+url = "https://just.systems/install.sh"
+EOF
+
+# MAKE just AVAILABLE TO THIS SCRIPT
+export PATH="$just_layer_dir"/bin:$PATH
