@@ -1,0 +1,5 @@
+web:
+  echo "This is fake webapp!"
+
+info:
+  echo "Hi justfile buildpack!"
